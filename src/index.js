@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import {RelojProject} from './RelojProject';
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const divRoot = document.getElementById('root');
+
+ReactDOM.render(<RelojProject />, divRoot);
 
