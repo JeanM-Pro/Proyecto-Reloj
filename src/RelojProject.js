@@ -1,84 +1,47 @@
-import React, {useState} from 'react'
-
+import React, {useState, useEffect} from "react"
 
 export const RelojProject = () => {
+    const [minutos, setMinutos] = useState(0)
+    const [segundos, setSegundos] = useState(5)
+    const [descanso, setDescanso] = useState(true)
 
+    useEffect(()=>{
+    
+        let interval = setInterval(() => {
+            clearInterval(interval)
+            if(minutos === 0 && segundos === 0) {
+                setDescanso(!descanso)
+                if(descanso) {
+                    setMinutos(5)
+                    setSegundos(0)
+                } else {
+                    setMinutos(25)
+                    setSegundos(0)
+                    setDescanso(false)
+                }
+            }
+            if(segundos === 0) {
+                if(minutos !== 0) {
+                    setSegundos(59)
+                    setMinutos(minutos -1)
+                }
+                else {
+                    
+                }
+            } else setSegundos(segundos -1)
+            
+        }, 1000)
+    }, [minutos, segundos, descanso])
 
-    const [descanso, setDescanso] = useState(5);
-
-    const breakDown = () => {
-        if (descanso > 1) setDescanso(descanso - 1);
-    }
-
-    const breakUp = () => {
-        setDescanso(descanso + 1);
-    };
-
-    const [sesion, setSesion] = useState(25);
-
-    const sesionDown = () => {
-        if(sesion > 1) setSesion(sesion - 1);
-    };
-
-    const sesionUp = () => {
-        setSesion(sesion + 1)
-    }
-
-
+    const formatearMinutos = minutos < 10 ? `0${minutos}`: minutos
+    const formatearSegundos = segundos < 10 ? `0${segundos}`: segundos
 
     return (
-        <>
-            <div className='content'>
-                <div className='content-app'>
-                    <div className='titulo'>
-                        <h1>Contador 25 + 5</h1>
-                    </div>
-
-                    <div className='contador'>
-
-                        <div className='contadores'>
-                            <div id='break-label'>Tiempo de Descanso</div>
-                            <div className='botones'>
-                                <button type='button' id="break-decrement" onClick={breakDown}>-</button>
-                                <div id="break-length">{descanso}</div>
-                                <button type='button' id="break-increment" onClick={breakUp}>+</button>
-                            </div>
-                        </div>
-
-                        <div className='contadores'>
-                            <div id='session-label'>Tiempo de Sesión</div>
-                            <div className='botones'>
-                                <button type='button' id="session-decrement" onClick={sesionDown}>-</button>
-                                <div id="session-length">{sesion}</div>
-                                <button type='button' id="session-increment" onClick={sesionUp}>+</button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className='time-content'>
-                        <div id='timer-label'>
-                            Session
-                        </div>
-
-                        <div id='time-left'>
-                            {sesion}:00
-                        </div>
-                    </div>
-
-                    <div className='timer-control'>
-                        <button id='start_stop'>
-                        Play/Pause
-                        </button>
-
-                        <button id="reset">
-                            Reset
-                        </button>
-
-                    </div>
-
-                </div>
-            </div>
-        </>
+        <div>
+            <h1>{descanso ? 'Hora de descansar' : 'Hora de Trabajar'}</h1>
+            <h1>{formatearMinutos}:{formatearSegundos}</h1>
+            <button onClick={() => setMinutos(minutos +1)}>+</button>
+            <button onClick={() => setMinutos(minutos -1)}>-</button>
+        </div>
     )
 }
